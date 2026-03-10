@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026年商店拜訪表-台北專用</title>
+<style>
+  :root {
+    --primary: #006FCF;
+    --primary-dark: #00175A;
+    --primary-light: #E8F4FD;
+    --primary-lighter: #F4F9FE;
+    --success: #2E7D32;
+    --success-light: #E8F5E9;
+    --danger: #D32F2F;
+    --warning: #F57F17;
+    --gray: #757575;
+    --gray-light: #F5F5F5;
+    --gray-medium: #E0E0E0;
+    --border: #E0E0E0;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --transition: 0.3s ease;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei","Noto Sans TC",sans-serif;background:linear-gradient(135deg,#F0F4F8 0%,#E8EDF2 100%);color:#333;line-height:1.7;min-height:100vh}
+  .topbar{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:16px 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,23,90,.3)}
+  .topbar h1{font-size:17px;text-align:center;font-weight:600}
+  .topbar .subtitle{font-size:12px;text-align:center;opacity:.8;margin-top:2px}
+  .progress-wrapper{background:#fff;padding:16px 20px 12px;position:sticky;top:60px;z-index:99;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .progress-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .progress-info .step-label{font-size:13px;font-weight:600;color:var(--primary-dark)}
+  .progress-info .step-count{font-size:12px;color:var(--gray)}
+  .progress-bar{width:100%;height:6px;background:var(--gray-medium);border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),#2196F3);border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+  .step-dots{display:flex;justify-content:center;gap:8px;margin-top:10px}
+  .step-dots .dot{width:8px;height:8px;border-radius:50%;background:var(--gray-medium);transition:all var(--transition)}
+  .step-dots .dot.active{background:var(--primary);transform:scale(1.3)}
+  .step-dots .dot.done{background:var(--success)}
+  .step-dots .dot.skipped{background:transparent;border:2px dashed var(--gray);width:8px;height:8px}
+  .skip-toast{position:fixed;top:120px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--primary-dark);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:150;opacity:0;pointer-events:none;transition:all .4s ease;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+  .skip-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .container{max-width:640px;margin:0 auto;padding:16px}
+  .step-panel{display:none;animation:fadeSlideIn .4s ease}
+  .step-panel.active{display:block}
+  @keyframes fadeSlideIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .card{background:#fff;border-radius:var(--radius);padding:24px;margin-bottom:14px;box-shadow:var(--shadow);border-top:3px solid var(--primary)}
+  .card.sub{border-top:3px solid #90CAF9}
+  .card.hidden{display:none}
+  .card h2{font-size:16px;color:var(--primary-dark);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+  .card h2 .icon{font-size:20px}
+  .field{margin-bottom:20px}
+  .field:last-child{margin-bottom:0}
+  .field.hidden-field{display:none}
+  .field label.title{display:block;font-weight:600;font-size:14px;margin-bottom:10px;color:#222}
+  .required::after{content:" *";color:var(--danger);font-weight:700}
+  .radio-group,.checkbox-group{display:flex;flex-direction:column;gap:4px}
+  .radio-group label,.checkbox-group label{display:flex;align-items:flex-start;gap:10px;font-size:14px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:all var(--transition);border:1.5px solid transparent;line-height:1.5}
+  .radio-group label:hover,.checkbox-group label:hover{background:var(--primary-lighter);border-color:#B3D9F7}
+  .radio-group label:has(input:checked),.checkbox-group label:has(input:checked){background:var(--primary-light);border-color:var(--primary)}
+  input[type="radio"],input[type="checkbox"]{accent-color:var(--primary);width:20px;height:20px;flex-shrink:0;margin-top:1px}
+  .inline-group{flex-direction:row;flex-wrap:wrap}
+  input[type="text"],textarea,input[type="number"]{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;transition:all var(--transition);font-family:inherit;background:#FAFAFA}
+  input[type="text"]:focus,textarea:focus,input[type="number"]:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,111,207,.12);background:#fff}
+  textarea{resize:vertical;min-height:80px}
+  .pos-test-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+  .pos-test-table th,.pos-test-table td{border:1px solid var(--border);padding:10px 8px;text-align:center}
+  .pos-test-table th{background:var(--primary-light);color:var(--primary-dark);font-weight:600}
+  .pos-test-table select{padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:#fff}
+  .nav-buttons{display:flex;gap:12px;margin-top:20px;margin-bottom:24px}
+  .btn{flex:1;padding:14px;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:6px}
+  .btn-prev{background:#fff;color:var(--primary);border:2px solid var(--primary)}
+  .btn-prev:hover{background:var(--primary-light)}
+  .btn-next{background:var(--primary);color:#fff}
+  .btn-next:hover{background:var(--primary-dark)}
+  .btn-submit-final{background:linear-gradient(135deg,var(--success),#43A047);color:#fff;flex:1}
+  .btn-submit-final:hover{filter:brightness(1.1)}
+  .btn:active{transform:scale(.97)}
+  .note{font-size:12px;color:var(--gray);margin-top:4px;line-height:1.5}
+  .note.warn{color:var(--warning);font-weight:500}
+  .auto-filled-hint{font-size:11px;color:var(--success);font-weight:500;margin-top:4px;display:none}
+  .auto-filled-hint.show{display:block}
+  .remember-row{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .remember-row label{font-size:13px;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:6px}
+  .remember-row input[type="checkbox"]{width:16px;height:16px}
+  .btn-clear-memory{background:none;border:1px solid var(--gray-medium);color:var(--gray);padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;transition:all var(--transition)}
+  .btn-clear-memory:hover{border-color:var(--danger);color:var(--danger)}
+  .saved-badge{font-size:11px;color:var(--success);font-weight:500;display:none}
+  .saved-badge.show{display:inline}
+  .success-screen{display:none;text-align:center;padding:60px 24px}
+  .success-screen.show{display:block}
+  .success-screen .checkmark{width:80px;height:80px;border-radius:50%;background:var(--success-light);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:40px;color:var(--success);animation:popIn .5s cubic-bezier(.175,.885,.32,1.275)}
+  @keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+  .success-screen h2{color:var(--success);margin-bottom:8px}
+  .success-screen p{color:var(--gray);font-size:14px}
+  .btn-new{display:inline-block;margin-top:24px;padding:12px 32px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600}
+  .loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.85);z-index:200;justify-content:center;align-items:center;flex-direction:column;gap:16px}
+  .loading-overlay.show{display:flex}
+  .spinner{width:48px;height:48px;border:4px solid var(--gray-medium);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .field.error input[type="text"],.field.error input[type="number"],.field.error textarea,.field.error select{border-color:var(--danger)}
+  .field.error .radio-group,.field.error .checkbox-group{border:1.5px solid var(--danger);border-radius:8px;padding:4px}
+  .error-msg{color:var(--danger);font-size:12px;margin-top:4px;display:none}
+  .field.error .error-msg{display:block}
+  @media(max-width:480px){
+    .container{padding:10px}
+    .card{padding:18px}
+    .topbar{padding:12px 16px}
+    .topbar h1{font-size:15px}
+    .progress-wrapper{top:52px;padding:12px 16px 10px}
+    .skip-toast{font-size:12px;padding:8px 14px;top:110px}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>2026年商店拜訪表-台北專用</h1>
+  <div class="subtitle">請依實際狀況填寫各項資料</div>
+</div>
+
+<div class="progress-wrapper">
+  <div class="progress-info">
+    <span class="step-label" id="stepLabel">步驟 1：基本資料 & 拜訪狀況</span>
+    <span class="step-count" id="stepCount">1 / 6</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:16.6%"></div></div>
+  <div class="step-dots" id="stepDots"></div>
+</div>
+
+<div class="skip-toast" id="skipToast"></div>
+
+<div class="container">
+  <form id="visitForm" novalidate>
+
+    <!-- ==================== STEP 1 ==================== -->
+    <div class="step-panel active" data-step="1" data-title="基本資料 & 拜訪狀況">
+      <div class="card">
+        <h2><span class="icon">👤</span> 基本資料</h2>
+        <div class="field" id="field_visitor_name">
+          <label class="title required">拜訪人</label>
+          <input type="text" name="visitor_name" id="visitorName" placeholder="請輸入拜訪人姓名">
+          <div class="error-msg">請輸入拜訪人</div>
+          <div class="remember-row">
+            <label><input type="checkbox" id="rememberVisitor" onchange="onRememberChange()"> 記住拜訪人</label>
+            <button type="button" class="btn-clear-memory" id="btnClearMemory" onclick="clearMemory()" style="display:none">清除記憶</button>
+            <span class="saved-badge" id="savedBadge">✔ 已記住</span>
+          </div>
+        </div>
+        <div class="field" id="field_serial_number">
+          <label class="title required">序號</label>
+          <input type="text" name="serial_number" placeholder="請輸入序號">
+          <div class="error-msg">請輸入序號</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="icon">📍</span> 拜訪狀況</h2>
+        <div class="field" id="field_visit_success">
+          <label class="title required">是否成功拜訪 (G欄)</label>
+          <div class="radio-group">
+            <label><input type="radio" name="visit_success" value="是" onchange="onVisitChange()"> 是</label>
+            <label><input type="radio" name="visit_success" value="否" onchange="onVisitChange()"> 否</label>
+          </div>
+          <div class="error-msg">請選擇是否成功拜訪</div>
+        </div>
+      </div>
+
+      <div class="card sub hidden" id="card_visit_fail">
+        <h2>無法拜訪 - 營業狀況回報 (H欄)</h2>
+        <div class="field" id="field_fail_reason">
+          <label class="title required">營業狀況</label>
+          <div class="radio-group">
+            <label><input type="radio" name="fail_reason" value="辦公室不對外營業"> 辦公室不對外營業（因辦公室拒絕拜訪；若拜訪成功請勿勾）</label>
+            <label><input type="radio" name="fail_reason" value="拜訪時非營業中"> 拜訪時非營業中（整修中、暫停營業、拜訪未開）</label>
+            <label><input type="radio" name="fail_reason" value="結束營業"> 結束營業</label>
+            <label><input type="radio" name="fail_reason" value="地址錯誤"> 地址錯誤</label>
+            <label><input type="radio" name="fail_reason" value="其他"> 其他（拒絕拜訪、預約制、無法確認）</label>
+          </div>
+          <div class="error-msg">請選擇營業狀況</div>
+        </div>
+        <div class="field">
+          <label class="title">詳細說明</label>
+          <textarea name="fail_detail" placeholder="ex: 查詢統編/總公司告知/整修中/拒絕拜訪/查詢任何方式皆聯絡不上，無法確認...&#10;地址/電話/對外名稱變更&#10;登記名稱/公司負責人變更須請商店連繫聯X"></textarea>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button type="button" class="btn btn-next" onclick="nextStep()">下一步 ▸</button>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 2 ==================== -->
+    <div class="step-panel" data-step="2" data-title="刷卡機測試">
+      <div class="card">
+        <h2><span class="icon">💳</span> 商店認知 & 刷卡機測試</h2>
+        <div class="field" id="field_know_ac">
+          <label class="title">商店是否知道可以刷AC (Q欄)</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="know_ac" value="是"> 是</label>
+            <label><input type="radio" name="know_ac" value="否"> 否</label>
+          </div>
+        </div>
+        <div class="field" id="field_pos_test">
+          <label class="title required">刷卡機測試 (S欄)</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="pos_test" value="有" onchange="onPosTestChange()"> 有</label>
+            <label><input type="radio" name="pos_test" value="無" onchange="onPosTestChange()"> 無</label>
+          </div>
+          <div class="error-msg">請選擇刷卡機測試狀態</div>
+        </div>
+      </div>
+
+      <div class="card sub hidden" id="card_pos_detail">
+        <h2>測試刷卡方式 (V欄)</h2>
+        <p class="note warn" style="margin-bottom:12px">請先感應 → 晶片 → 磁條</p>
+        <div class="field" id="field_test_method">
+          <label class="title required">測試方式（可複選）</label>
+          <div class="checkbox-group inline-group">
+            <label><input type="checkbox" name="test_method" value="感應"> 感應</label>
+            <label><input type="checkbox" name="test_method" value="晶片"> 晶片</label>
+            <label><input type="checkbox" name="test_method" value="磁條"> 磁條</label>
+          </div>
+          <div class="error-msg">請至少選擇一種測試方式</div>
+        </div>
+        <div class="field" id="field_pos_result">
+          <label class="title required">POS 機版本測試結果</label>
+          <p class="note" style="margin-bottom:8px">2:感應 / 1:晶片 / 0:磁條（至少填一台）</p>
+          <table class="pos-test-table">
+            <thead><tr><th></th><th>結果</th></tr></thead>
+            <tbody>
+              <tr><td>POS機1號</td>
+                <td><select name="pos1_tap"><option value="">-</option><option>2</option><option>1</option><option>0</option></select></td></tr>
+              <tr><td>POS機2號</td>
+                <td><select name="pos2_tap"><option value="">-</option><option>2</option><option>1</option><option>0</option></select></td></tr>
+              <tr><td>POS機3號</td>
+                <td><select name="pos3_tap"><option value="">-</option><option>2</option><option>1</option><option>0</option></select></td></tr>
+            </tbody>
+          </table>
+          <div class="error-msg">請至少填寫一台 POS 機的測試結果</div>
+        </div>
+        <div class="field" id="field_test_success">
+          <label class="title required">刷卡機是否有測試成功 (U欄)</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="test_success" value="是" onchange="onTestSuccessChange()"> 是</label>
+            <label><input type="radio" name="test_success" value="否" onchange="onTestSuccessChange()"> 否</label>
+          </div>
+          <div class="error-msg">請選擇刷卡機是否有測試成功</div>
+        </div>
+      </div>
+
+      <div class="card sub hidden" id="card_no_test">
+        <h2>無測試刷卡機的原因 (T欄)</h2>
+        <div class="field" id="field_no_test_reason">
+          <label class="title required">原因</label>
+          <div class="radio-group">
+            <label><input type="radio" name="no_test_reason" value="商店拒絕測試" onchange="onNoTestReasonChange()"> 商店拒絕測試</label>
+            <label><input type="radio" name="no_test_reason" value="現場無刷卡機" onchange="onNoTestReasonChange()"> 現場無刷卡機（原因請填刷卡機狀況回報）</label>
+            <label><input type="radio" name="no_test_reason" value="商店告知已測過可刷" onchange="onNoTestReasonChange()"> 商店告知已測過可刷</label>
+            <label><input type="radio" name="no_test_reason" value="有刷過AC無需測試" onchange="onNoTestReasonChange()"> 有刷過AC無需測試</label>
+            <label><input type="radio" name="no_test_reason" value="其他" onchange="onNoTestReasonChange()"> 其他</label>
+          </div>
+          <div class="error-msg">請選擇無測試刷卡機的原因</div>
+          <input type="text" name="no_test_other" placeholder="請說明其他原因" style="margin-top:8px;display:none">
+        </div>
+      </div>
+
+      <div class="card sub hidden" id="card_test_fail_issue">
+        <h2><span class="icon">⚠️</span> 刷卡機問題狀況回報（可複選）</h2>
+        <div class="field" id="field_pos_issue_step2">
+          <label class="title required">請至少勾選一個問題狀況</label>
+          <p class="note warn" style="margin-bottom:8px">因刷卡機測試未成功，請回報問題狀況</p>
+          <div class="error-msg">測試未成功，請至少勾選一個問題狀況</div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button type="button" class="btn btn-prev" onclick="prevStep()">◂ 上一步</button>
+        <button type="button" class="btn btn-next" onclick="nextStep()">下一步 ▸</button>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 3 ==================== -->
+    <div class="step-panel" data-step="3" data-title="刷卡機問題回報">
+      <div class="card">
+        <h2><span class="icon">🔧</span> 刷卡機有問題狀況回報</h2>
+        <div class="field" id="field_pos_issue">
+          <label class="title required">狀況回報（可複選）</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="pos_issue" value="換刷卡機不併機" onchange="onPosIssueChange()"> 換刷卡機不併機</label>
+            <label><input type="checkbox" name="pos_issue" value="已撤機無刷卡機" onchange="onPosIssueChange()"> 已撤機無刷卡機</label>
+            <label><input type="checkbox" name="pos_issue" value="要求解約/拒收AC" onchange="onPosIssueChange()"> 要求解約/拒收AC（原因請填下面欄位）</label>
+            <label><input type="checkbox" name="pos_issue" value="商代不對舊商代請解約" onchange="onPosIssueChange()"> 商代不對，舊商代請解約（提供新AE商代在下面一欄）</label>
+            <label><input type="checkbox" name="pos_issue" value="現場已協助撥電話報修" onchange="onPosIssueChange()"> 現場已協助撥電話報修（聯信/銀行）</label>
+            <label><input type="checkbox" name="pos_issue" value="聯信刷不過" onchange="onPosIssueChange()"> 聯信刷不過，已請店家致電聯信報修（回來要再打電話提醒）</label>
+            <label><input type="checkbox" name="pos_issue" value="銀行刷不過" onchange="onPosIssueChange()"> 銀行刷不過，已請店家致電聯信報修（回來要再打電話提醒）</label>
+            <label><input type="checkbox" name="pos_issue" value="店家要求AC幫忙併機報修" onchange="onPosIssueChange()"> 店家要求AC幫忙併機、報修（須提供資料）並詳細寫上刷不過刷卡機狀況</label>
+            <label><input type="checkbox" name="pos_issue" value="其他" onchange="onPosIssueChange()"> 其他</label>
+          </div>
+          <input type="text" name="pos_issue_other" placeholder="其他狀況說明" style="margin-top:8px;display:none">
+          <div class="error-msg">請至少勾選一個問題狀況</div>
+        </div>
+      </div>
+
+      <div class="card hidden" id="card_issue_details">
+        <div class="field" id="field_pos_issue_detail">
+          <label class="title" id="label_pos_issue_detail">拒收原因 / 新AC商代 / 刷不過畫面 說明</label>
+          <textarea name="pos_issue_detail" placeholder="請詳細說明"></textarea>
+          <div class="error-msg">請填寫拒收原因 / 新AC商代 說明</div>
+        </div>
+        <div class="field" id="field_merge_info">
+          <label class="title" id="label_merge_info">併機資料</label>
+          <input type="text" name="merge_bank" placeholder="銀行" style="margin-bottom:6px">
+          <input type="text" name="merge_merchant" placeholder="商代" style="margin-bottom:6px">
+          <input type="text" name="merge_terminal" placeholder="端代" style="margin-bottom:6px">
+          <input type="text" name="merge_contact" placeholder="併機連絡人" style="margin-bottom:6px">
+          <input type="text" name="merge_phone" placeholder="連絡電話">
+          <div class="error-msg">請填寫併機資料</div>
+        </div>
+        <div class="field" id="field_merge_vendor">
+          <label class="title" id="label_merge_vendor">換刷卡機無法併機的廠商名稱</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="merge_fail_vendor" value="街口"> 街口</label>
+            <label><input type="radio" name="merge_fail_vendor" value="ACpay"> ACpay</label>
+            <label><input type="radio" name="merge_fail_vendor" value="ezAIO簡單收"> ezAIO簡單收</label>
+            <label><input type="radio" name="merge_fail_vendor" value="其他"> 其他</label>
+          </div>
+          <input type="text" name="merge_fail_vendor_other" placeholder="其他廠商名稱" style="margin-top:8px">
+          <div class="error-msg">請選擇無法併機的廠商</div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button type="button" class="btn btn-prev" onclick="prevStep()">◂ 上一步</button>
+        <button type="button" class="btn btn-next" onclick="nextStep()">下一步 ▸</button>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 4 ==================== -->
+    <div class="step-panel" data-step="4" data-title="POP 擺設狀況">
+      <div class="card">
+        <h2><span class="icon">🏪</span> POP 擺設狀況</h2>
+        <div class="field" id="field_pop_enter">
+          <label class="title required">進去時是否有看到 POP (I欄)</label>
+          <div class="radio-group">
+            <label><input type="radio" name="pop_enter" value="有AC POP (Y)" onchange="onPopEnterChange()"> 有AC POP (Y)</label>
+            <label><input type="radio" name="pop_enter" value="無POP (N)" onchange="onPopEnterChange()"> 無POP (N)</label>
+            <label><input type="radio" name="pop_enter" value="有他行POP (N)" onchange="onPopEnterChange()"> 有他行POP (N)</label>
+          </div>
+          <div class="error-msg">請選擇進去時是否有看到 POP</div>
+        </div>
+        <div class="field" id="field_sticker_leave">
+          <label class="title required">商店外觀（貼紙）- 離開時 (J欄)</label>
+          <div class="radio-group">
+            <label><input type="radio" name="sticker_leave" value="有AC貼紙 (Y)" onchange="onStickerLeaveChange()"> 有AC貼紙 (Y)</label>
+            <label><input type="radio" name="sticker_leave" value="無他行/無AC貼紙 (N)" onchange="onStickerLeaveChange()"> 無他行/無AC貼紙 (N)</label>
+            <label><input type="radio" name="sticker_leave" value="有他行但無AC貼紙 (N)" onchange="onStickerLeaveChange()"> 有他行但無AC貼紙 (N)</label>
+          </div>
+          <div class="error-msg">請選擇商店外觀（貼紙）狀況</div>
+        </div>
+        <div class="field" id="field_provide_pop">
+          <label class="title required">現場是否提供 POP (L欄)</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="provide_pop" value="是" onchange="onProvidePOP()"> 是</label>
+            <label><input type="radio" name="provide_pop" value="否" onchange="onProvidePOP()"> 否</label>
+          </div>
+          <div class="error-msg">請選擇現場是否提供 POP</div>
+        </div>
+      </div>
+
+      <div class="card sub hidden" id="card_pop_items">
+        <h2>現場提供文宣物</h2>
+        <div class="field" id="field_pop_item">
+          <label class="title required">文宣物項目（至少選一個）</label>
+          <div class="checkbox-group inline-group">
+            <label><input type="checkbox" name="pop_item" value="貼紙"> 貼紙</label>
+            <label><input type="checkbox" name="pop_item" value="簽名墊"> 簽名墊</label>
+            <label><input type="checkbox" name="pop_item" value="筆座"> 筆座</label>
+            <label><input type="checkbox" name="pop_item" value="台北市新簽約掛牌"> 台北市新簽約掛牌</label>
+            <label><input type="checkbox" name="pop_item" value="便利貼"> 便利貼</label>
+            <label><input type="checkbox" name="pop_item" value="名片座"> 名片座</label>
+            <label><input type="checkbox" name="pop_item" value="小費盤"> 小費盤</label>
+          </div>
+          <div class="error-msg">請至少選擇一項文宣物</div>
+        </div>
+      </div>
+
+      <div class="card hidden" id="card_pop_leave">
+        <h2>離開時確認</h2>
+        <div class="field" id="field_pop_exit">
+          <label class="title required">出來時是否有看到 POP (J欄)</label>
+          <div class="radio-group">
+            <label><input type="radio" name="pop_exit" value="有AC POP (Y)"> 有AC POP (Y)</label>
+            <label><input type="radio" name="pop_exit" value="無POP (N)"> 無POP (N)</label>
+            <label><input type="radio" name="pop_exit" value="有他行POP (N)"> 有他行POP (N)</label>
+          </div>
+          <div class="auto-filled-hint" id="hint_pop_exit">✔ 已根據前面選項自動勾選</div>
+          <div class="error-msg">請選擇出來時是否有看到 POP</div>
+        </div>
+        <div class="field" id="field_pop_exit_exterior">
+          <label class="title required">出來時外觀是否有AC POP（貼上貼紙或掛上營休掛牌）</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="pop_exit_exterior" value="是"> 是</label>
+            <label><input type="radio" name="pop_exit_exterior" value="否"> 否</label>
+          </div>
+          <div class="auto-filled-hint" id="hint_pop_exit_exterior">✔ 已根據前面選項自動勾選</div>
+          <div class="error-msg">請選擇出來時外觀是否有AC POP（外觀與內部不能同時為「否」）</div>
+        </div>
+        <div class="field" id="field_pop_exit_interior">
+          <label class="title required">出來時內部是否有AC POP (P欄)</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="pop_exit_interior" value="是"> 是</label>
+            <label><input type="radio" name="pop_exit_interior" value="否"> 否</label>
+          </div>
+          <div class="error-msg">請選擇出來時內部是否有AC POP（外觀與內部不能同時為「否」）</div>
+        </div>
+      </div>
+
+      <div class="card hidden" id="card_no_pop_reason">
+        <h2>沒有貼貼紙/沒放POP原因 (N欄)</h2>
+        <div class="field" id="field_no_pop_reason">
+          <label class="title required">原因</label>
+          <div class="radio-group">
+            <label><input type="radio" name="no_pop_reason" value="已有POP不想索取更多"> 已有POP, 不想索取更多</label>
+            <label><input type="radio" name="no_pop_reason" value="乾淨店面"> 乾淨店面</label>
+            <label><input type="radio" name="no_pop_reason" value="手遞POP/拜訪事後郵寄"> 手遞POP/拜訪事後郵寄，沒有現場協助擺放</label>
+            <label><input type="radio" name="no_pop_reason" value="需要主管同意"> 需要主管同意</label>
+            <label><input type="radio" name="no_pop_reason" value="特店不收AE卡"> 特店不收AE卡</label>
+            <label><input type="radio" name="no_pop_reason" value="辦公室不需擺放"> 辦公室不需擺放</label>
+            <label><input type="radio" name="no_pop_reason" value="其他"> 其他</label>
+          </div>
+          <input type="text" name="no_pop_other" placeholder="其他原因" style="margin-top:8px;display:none">
+          <div class="error-msg">請選擇沒放POP的原因</div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button type="button" class="btn btn-prev" onclick="prevStep()">◂ 上一步</button>
+        <button type="button" class="btn btn-next" onclick="nextStep()">下一步 ▸</button>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 5 ==================== -->
+    <div class="step-panel" data-step="5" data-title="活動 & 商城確認">
+      <div class="card">
+        <h2><span class="icon">🎯</span> 在地好店活動 & 其他</h2>
+        <div class="field" id="field_local_event">
+          <label class="title">同意參加在地好店活動</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="local_event" value="同意"> 同意</label>
+            <label><input type="radio" name="local_event" value="不同意"> 不同意</label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="title">商店聯絡人</label>
+          <input type="text" name="store_contact" placeholder="商店聯絡人姓名">
+        </div>
+        <div class="field" id="field_welcome_swipe">
+          <label class="title required">拜訪結束後是否歡迎卡員刷卡 (R欄)</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="welcome_swipe" value="是"> 是</label>
+            <label><input type="radio" name="welcome_swipe" value="否"> 否</label>
+          </div>
+          <div class="error-msg">請選擇是否歡迎卡員刷卡</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="icon">🌐</span> 郵購 / 網路商城</h2>
+        <div class="field" id="field_mail_order_ac">
+          <label class="title">郵購商店：信用卡授權書/郵購單上有AC付款選項</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="mail_order_ac" value="是"> 是</label>
+            <label><input type="radio" name="mail_order_ac" value="否"> 否</label>
+          </div>
+        </div>
+        <div class="field" id="field_online_ac">
+          <label class="title">網路商城：確認結帳頁面有AC付款選項及AC logo</label>
+          <div class="radio-group">
+            <label><input type="radio" name="online_ac" value="有" onchange="onOnlineAC()"> 有</label>
+            <label><input type="radio" name="online_ac" value="沒有" onchange="onOnlineAC()"> 沒有（預計什麼時候完成/沒有使用網路商城）</label>
+            <label><input type="radio" name="online_ac" value="其他" onchange="onOnlineAC()"> 其他</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card sub hidden" id="card_online_detail">
+        <div class="field">
+          <label class="title">備註說明</label>
+          <textarea name="online_detail" placeholder="預計什麼時候完成/沒有使用網路商城/其他備註"></textarea>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button type="button" class="btn btn-prev" onclick="prevStep()">◂ 上一步</button>
+        <button type="button" class="btn btn-next" onclick="nextStep()">下一步 ▸</button>
+      </div>
+    </div>
+
+    <!-- ==================== STEP 6 ==================== -->
+    <div class="step-panel" data-step="6" data-title="刷卡金額 & 送出">
+      <div class="card">
+        <h2><span class="icon">💰</span> 刷卡金額 & 行動支付通知</h2>
+        <div class="field" id="field_swipe_amount">
+          <label class="title">刷卡金額</label>
+          <input type="number" name="swipe_amount" placeholder="輸入金額">
+          <p class="note">萊爾富一台不超過15元</p>
+        </div>
+        <div class="field" id="field_notify_applepay">
+          <label class="title required">通知商店台灣美國運通發行的美國運通卡已經可以綁定在 Apple Pay & Google Pay 消費</label>
+          <div class="radio-group inline-group">
+            <label><input type="radio" name="notify_applepay" value="Y"> Y</label>
+            <label><input type="radio" name="notify_applepay" value="N"> N</label>
+          </div>
+          <div class="error-msg">請選擇是否已通知 Apple Pay & Google Pay</div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button type="button" class="btn btn-prev" onclick="prevStep()">◂ 上一步</button>
+        <button type="submit" class="btn btn-submit-final">📤 送出表單</button>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="success-screen" id="successScreen">
+    <div class="checkmark">✓</div>
+    <h2>送出成功！</h2>
+    <p>資料已儲存至 Google 試算表</p>
+    <p id="submitTime" style="margin-top:8px;font-size:13px;color:#999"></p>
+    <button class="btn-new" onclick="resetForm()">填寫新的一筆</button>
+  </div>
+</div>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div style="color:var(--primary);font-weight:600">正在儲存資料...</div>
+</div>
+
+<script>
+var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjk1RIuXsZTTi8eDF1ijdeP5I-kbxJ6AU12CFfwBaVOUN2OTxefW7VRJwqHj1kzJaP/exec';
+
+var currentStep = 1;
+var totalSteps = 6;
+var skipToEnd = false;
+var skipStep3 = false;
+var skipStep3Reason = '';
+
+var requireIssueDetail = false;
+var requireMergeInfo = false;
+var requireMergeVendor = false;
+
+var SIMPLE_ISSUES = ['換刷卡機不併機', '已撤機無刷卡機'];
+
+// ==============================
+// 工具函數
+// ==============================
+function getRadioVal(name) {
+  var checked = document.querySelector('input[name="' + name + '"]:checked');
+  return checked ? checked.value : '';
+}
+
+function setRadioVal(name, value) {
+  var radios = document.querySelectorAll('input[name="' + name + '"]');
+  radios.forEach(function(r) {
+    if (r.value === value) r.checked = true;
+  });
+}
+
+// ==============================
+// localStorage
+// ==============================
+function loadVisitorFromStorage() {
+  var saved = localStorage.getItem('visitor_name');
+  var remember = localStorage.getItem('remember_visitor') === 'true';
+  if (saved && remember) {
+    document.getElementById('visitorName').value = saved;
+    document.getElementById('rememberVisitor').checked = true;
+    document.getElementById('btnClearMemory').style.display = 'inline-block';
+    document.getElementById('savedBadge').classList.add('show');
+  }
+}
+function onRememberChange() {
+  var checked = document.getElementById('rememberVisitor').checked;
+  if (checked) {
+    var name = document.getElementById('visitorName').value.trim();
+    if (name) {
+      localStorage.setItem('visitor_name', name);
+      localStorage.setItem('remember_visitor', 'true');
+      document.getElementById('savedBadge').classList.add('show');
+    }
+    document.getElementById('btnClearMemory').style.display = 'inline-block';
+  } else {
+    localStorage.removeItem('visitor_name');
+    localStorage.removeItem('remember_visitor');
+    document.getElementById('savedBadge').classList.remove('show');
+    document.getElementById('btnClearMemory').style.display = 'none';
+  }
+}
+function saveVisitorIfNeeded() {
+  if (document.getElementById('rememberVisitor').checked) {
+    var name = document.getElementById('visitorName').value.trim();
+    if (name) {
+      localStorage.setItem('visitor_name', name);
+      localStorage.setItem('remember_visitor', 'true');
+      document.getElementById('savedBadge').classList.add('show');
+    }
+  }
+}
+function clearMemory() {
+  localStorage.removeItem('visitor_name');
+  localStorage.removeItem('remember_visitor');
+  document.getElementById('rememberVisitor').checked = false;
+  document.getElementById('btnClearMemory').style.display = 'none';
+  document.getElementById('savedBadge').classList.remove('show');
+  document.getElementById('visitorName').value = '';
+  document.getElementById('visitorName').focus();
+}
+
+// ==============================
+// 進度條
+// ==============================
+function initDots() {
+  var c = document.getElementById('stepDots');
+  c.innerHTML = '';
+  for (var i = 1; i <= totalSteps; i++) {
+    var d = document.createElement('span');
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.dataset.step = i;
+    c.appendChild(d);
+  }
+}
+function updateUI() {
+  document.querySelectorAll('.step-panel').forEach(function(p) {
+    p.classList.toggle('active', parseInt(p.dataset.step) === currentStep);
+  });
+  var ap = document.querySelector('.step-panel[data-step="' + currentStep + '"]');
+  document.getElementById('stepLabel').textContent = '步驟 ' + currentStep + '：' + (ap ? ap.dataset.title : '');
+  document.getElementById('stepCount').textContent = currentStep + ' / ' + totalSteps;
+  document.getElementById('progressFill').style.width = ((currentStep / totalSteps) * 100) + '%';
+  document.querySelectorAll('.step-dots .dot').forEach(function(dot) {
+    var s = parseInt(dot.dataset.step);
+    dot.className = 'dot';
+    if (s === 3 && skipStep3) dot.classList.add('skipped');
+    else if (s < currentStep) dot.classList.add('done');
+    if (s === currentStep) dot.classList.add('active');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function showSkipToast(msg) {
+  var toast = document.getElementById('skipToast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 2500);
+}
+
+// ==============================
+// 導覽
+// ==============================
+function nextStep() {
+  if (!validateStep(currentStep)) return;
+  if (currentStep === 1) saveVisitorIfNeeded();
+  if (currentStep === 1 && skipToEnd) {
+    currentStep = totalSteps;
+  } else if (currentStep === 2 && skipStep3) {
+    currentStep = 4;
+    showSkipToast(skipStep3Reason);
+  } else if (currentStep < totalSteps) {
+    currentStep++;
+  }
+  updateUI();
+}
+function prevStep() {
+  if (currentStep === totalSteps && skipToEnd) {
+    currentStep = 1;
+  } else if (currentStep === 4 && skipStep3) {
+    currentStep = 2;
+  } else if (currentStep > 1) {
+    currentStep--;
+  }
+  updateUI();
+}
+
+// ==============================
+// 驗證
+// ==============================
+function validateStep(step) {
+  var valid = true;
+  var panel = document.querySelector('.step-panel[data-step="' + step + '"]');
+  if (!panel) return true;
+
+  panel.querySelectorAll('.field.error').forEach(function(f) { f.classList.remove('error'); });
+
+  function markError(fieldId) {
+    var el = document.getElementById(fieldId);
+    if (el) { el.classList.add('error'); valid = false; }
+  }
+
+  if (step === 1) {
+    if (!document.querySelector('input[name="visitor_name"]').value.trim()) markError('field_visitor_name');
+    if (!document.querySelector('input[name="serial_number"]').value.trim()) markError('field_serial_number');
+    if (!getRadioVal('visit_success')) markError('field_visit_success');
+    if (getRadioVal('visit_success') === '否' && !getRadioVal('fail_reason')) markError('field_fail_reason');
+  }
+
+  if (step === 2) {
+    var posTest = getRadioVal('pos_test');
+    if (!posTest) markError('field_pos_test');
+
+    if (posTest === '無') {
+      if (!getRadioVal('no_test_reason')) markError('field_no_test_reason');
+    }
+
+    if (posTest === '有') {
+      if (document.querySelectorAll('input[name="test_method"]:checked').length === 0) markError('field_test_method');
+
+      var testSuccess = getRadioVal('test_success');
+      if (!testSuccess) markError('field_test_success');
+
+      // 只有測試成功才必填 POS 結果
+      if (testSuccess === '是') {
+        var posSelects = ['pos1_tap', 'pos2_tap', 'pos3_tap'];
+        var hasAnyPos = posSelects.some(function(n) {
+          var sel = document.querySelector('select[name="' + n + '"]');
+          return sel && sel.value;
+        });
+        if (!hasAnyPos) markError('field_pos_result');
+      }
+    }
+  }
+
+  if (step === 3) {
+    if (document.querySelectorAll('input[name="pos_issue"]:checked').length === 0) markError('field_pos_issue');
+
+    var checkedIssues = Array.from(document.querySelectorAll('input[name="pos_issue"]:checked')).map(function(c) { return c.value; });
+
+    if (checkedIssues.includes('要求解約/拒收AC') || checkedIssues.includes('商代不對舊商代請解約')) {
+      if (!document.querySelector('textarea[name="pos_issue_detail"]').value.trim()) markError('field_pos_issue_detail');
+    }
+    if (checkedIssues.includes('店家要求AC幫忙併機報修')) {
+      var anyMerge = ['merge_bank','merge_merchant','merge_terminal','merge_contact','merge_phone'].some(function(n) {
+        var inp = document.querySelector('input[name="' + n + '"]');
+        return inp && inp.value.trim();
+      });
+      if (!anyMerge) markError('field_merge_info');
+    }
+    if (checkedIssues.includes('換刷卡機不併機')) {
+      if (!getRadioVal('merge_fail_vendor')) markError('field_merge_vendor');
+    }
+  }
+
+  if (step === 4) {
+    if (!getRadioVal('pop_enter')) markError('field_pop_enter');
+    if (!getRadioVal('sticker_leave')) markError('field_sticker_leave');
+    if (!getRadioVal('provide_pop')) markError('field_provide_pop');
+
+    if (getRadioVal('provide_pop') === '是') {
+      if (document.querySelectorAll('input[name="pop_item"]:checked').length === 0) markError('field_pop_item');
+    }
+
+    var popLeaveCard = document.getElementById('card_pop_leave');
+    if (popLeaveCard && !popLeaveCard.classList.contains('hidden')) {
+      if (!getRadioVal('pop_exit')) markError('field_pop_exit');
+      if (!getRadioVal('pop_exit_exterior')) markError('field_pop_exit_exterior');
+      if (!getRadioVal('pop_exit_interior')) markError('field_pop_exit_interior');
+
+      // 出來有看到 AC POP 時，外觀和內部不能同時勾否
+      if (getRadioVal('pop_exit') === '有AC POP (Y)') {
+        var exterior = getRadioVal('pop_exit_exterior');
+        var interior = getRadioVal('pop_exit_interior');
+        if (exterior === '否' && interior === '否') {
+          markError('field_pop_exit_exterior');
+          markError('field_pop_exit_interior');
+        }
+      }
+    }
+
+    var noPopCard = document.getElementById('card_no_pop_reason');
+    if (noPopCard && !noPopCard.classList.contains('hidden')) {
+      if (!getRadioVal('no_pop_reason')) markError('field_no_pop_reason');
+    }
+  }
+
+  if (step === 5) {
+    if (!getRadioVal('welcome_swipe')) markError('field_welcome_swipe');
+  }
+
+  if (step === 6) {
+    if (!getRadioVal('notify_applepay')) markError('field_notify_applepay');
+  }
+
+  if (!valid) {
+    var firstErr = panel.querySelector('.field.error');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return valid;
+}
+
+// ==============================
+// 條件顯示邏輯
+// ==============================
+function onVisitChange() {
+  var val = getRadioVal('visit_success');
+  document.getElementById('card_visit_fail').classList.toggle('hidden', val !== '否');
+  skipToEnd = (val === '否');
+}
+
+function onPosTestChange() {
+  var val = getRadioVal('pos_test');
+  document.getElementById('card_pos_detail').classList.toggle('hidden', val !== '有');
+  document.getElementById('card_no_test').classList.toggle('hidden', val !== '無');
+  document.getElementById('card_test_fail_issue').classList.add('hidden');
+
+  if (val === '有') {
+    skipStep3 = false;
+    skipStep3Reason = '';
+  } else if (val === '無') {
+    onNoTestReasonChange();
+  }
+}
+
+function onTestSuccessChange() {
+  var val = getRadioVal('test_success');
+  document.getElementById('card_test_fail_issue').classList.toggle('hidden', val !== '否');
+
+  if (val === '是') {
+    skipStep3 = true;
+    skipStep3Reason = '測試成功，跳過問題回報';
+  } else {
+    skipStep3 = false;
+    skipStep3Reason = '';
+  }
+}
+
+function onNoTestReasonChange() {
+  var val = getRadioVal('no_test_reason');
+  var otherInput = document.querySelector('input[name="no_test_other"]');
+  if (otherInput) otherInput.style.display = (val === '其他') ? 'block' : 'none';
+
+  if (val === '現場無刷卡機') {
+    skipStep3 = false;
+    skipStep3Reason = '';
+  } else if (val) {
+    skipStep3 = true;
+    skipStep3Reason = '無測試原因：' + val + '，跳過問題回報';
+  }
+}
+
+function onPosIssueChange() {
+  var checked = Array.from(document.querySelectorAll('input[name="pos_issue"]:checked')).map(function(c) { return c.value; });
+  var otherInput = document.querySelector('input[name="pos_issue_other"]');
+  if (otherInput) otherInput.style.display = checked.includes('其他') ? 'block' : 'none';
+
+  requireIssueDetail = checked.includes('要求解約/拒收AC') || checked.includes('商代不對舊商代請解約');
+  requireMergeInfo = checked.includes('店家要求AC幫忙併機報修');
+  requireMergeVendor = checked.includes('換刷卡機不併機');
+
+  var needDetails = requireIssueDetail || requireMergeInfo || requireMergeVendor || checked.includes('聯信刷不過') || checked.includes('銀行刷不過') || checked.includes('店家要求AC幫忙併機報修') || checked.includes('其他');
+
+  document.getElementById('card_issue_details').classList.toggle('hidden', !needDetails);
+
+  document.getElementById('field_pos_issue_detail').style.display = (requireIssueDetail || checked.includes('聯信刷不過') || checked.includes('銀行刷不過') || checked.includes('店家要求AC幫忙併機報修') || checked.includes('其他')) ? 'block' : 'none';
+  document.getElementById('field_merge_info').style.display = requireMergeInfo ? 'block' : 'none';
+  document.getElementById('field_merge_vendor').style.display = requireMergeVendor ? 'block' : 'none';
+}
+
+function onPopEnterChange() {
+  var popEnterVal = getRadioVal('pop_enter');
+  if (popEnterVal === '有AC POP (Y)') {
+    setRadioVal('pop_exit', '有AC POP (Y)');
+    document.getElementById('hint_pop_exit').classList.add('show');
+  } else {
+    document.getElementById('hint_pop_exit').classList.remove('show');
+  }
+  updatePopLeaveCard();
+}
+
+function onStickerLeaveChange() {
+  updatePopLeaveCard();
+  var stickerVal = getRadioVal('sticker_leave');
+  if (stickerVal && stickerVal.includes('有AC')) {
+    setRadioVal('pop_exit_exterior', '是');
+    document.getElementById('hint_pop_exit_exterior').classList.add('show');
+  } else {
+    document.getElementById('hint_pop_exit_exterior').classList.remove('show');
+  }
+}
+
+function onProvidePOP() {
+  var val = getRadioVal('provide_pop');
+  document.getElementById('card_pop_items').classList.toggle('hidden', val !== '是');
+  updatePopLeaveCard();
+  updateNoPopReason();
+}
+
+function updatePopLeaveCard() {
+  var providePop = getRadioVal('provide_pop');
+  var show = (providePop === '是') || (providePop === '否');
+  document.getElementById('card_pop_leave').classList.toggle('hidden', !show);
+}
+
+function updateNoPopReason() {
+  var providePop = getRadioVal('provide_pop');
+  document.getElementById('card_no_pop_reason').classList.toggle('hidden', providePop !== '否');
+}
+
+function onOnlineAC() {
+  var val = getRadioVal('online_ac');
+  document.getElementById('card_online_detail').classList.toggle('hidden', val === '有' || !val);
+}
+
+// ==============================
+// 表單送出
+// ==============================
+document.getElementById('visitForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (!validateStep(currentStep)) return;
+
+  var overlay = document.getElementById('loadingOverlay');
+  overlay.classList.add('show');
+
+  var formData = new FormData(this);
+  var data = {};
+  formData.forEach(function(value, key) {
+    if (data[key]) {
+      data[key] = Array.isArray(data[key]) ? data[key].concat([value]) : [data[key], value];
+    } else {
+      data[key] = value;
+    }
+  });
+
+  // 陣列轉字串
+  Object.keys(data).forEach(function(k) {
+    if (Array.isArray(data[k])) data[k] = data[k].join(', ');
+  });
+
+  // 合併併機資料為一個字串
+  var mergeFields = ['merge_bank','merge_merchant','merge_terminal','merge_contact','merge_phone'];
+  var mergeLabels = ['銀行','商代','端代','併機連絡人','連絡電話'];
+  var mergeParts = [];
+  for (var i = 0; i < mergeFields.length; i++) {
+    var v = data[mergeFields[i]] || '';
+    if (v) mergeParts.push(mergeLabels[i] + '：' + v);
+    delete data[mergeFields[i]];
+  }
+  data['merge_info'] = mergeParts.join(' / ');
+
+  var submitTimeStr = new Date().toLocaleString('zh-TW');
+
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify(data)
+  })
+  .then(function() {
+    overlay.classList.remove('show');
+    document.getElementById('visitForm').style.display = 'none';
+    document.querySelector('.progress-wrapper').style.display = 'none';
+    var screen = document.getElementById('successScreen');
+    screen.classList.add('show');
+    document.getElementById('submitTime').textContent = '送出時間：' + submitTimeStr;
+  })
+  .catch(function(err) {
+    overlay.classList.remove('show');
+    alert('送出失敗，請重試。\n' + err.message);
+  });
+});
+
+function resetForm() {
+  var form = document.getElementById('visitForm');
+  form.reset();
+  form.style.display = 'block';
+  document.querySelector('.progress-wrapper').style.display = 'block';
+  document.getElementById('successScreen').classList.remove('show');
+  currentStep = 1;
+  skipToEnd = false;
+  skipStep3 = false;
+  skipStep3Reason = '';
+
+  var conditionalCards = ['card_visit_fail','card_pos_detail','card_no_test','card_test_fail_issue','card_issue_details','card_pop_items','card_pop_leave','card_no_pop_reason','card_online_detail'];
+  conditionalCards.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+
+  document.querySelectorAll('.auto-filled-hint').forEach(function(h) { h.classList.remove('show'); });
+
+  var otherInputs = document.querySelectorAll('input[name="no_test_other"], input[name="pos_issue_other"], input[name="no_pop_other"]');
+  otherInputs.forEach(function(inp) { inp.style.display = 'none'; });
+
+  loadVisitorFromStorage();
+  updateUI();
+}
+
+// ==============================
+// 初始化
+// ==============================
+initDots();
+loadVisitorFromStorage();
+</script>
+</body>
+</html>
